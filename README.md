@@ -5,7 +5,7 @@ roomba
 
 Automated javascript testing
 
-Same test using roomba
+Sampe test using roomba
 ```javascript
 var Roomba = require("roomba"),
     expect = require("chai").expect,
