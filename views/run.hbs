@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Roomba</title>
+
+  <link rel='stylesheet' href='/css/bootstrap.min.css'>
+  <link rel='stylesheet' href='/css/font-awesome.css'>
+  <link rel='stylesheet' href='/css/style.css'>
+</head>
+<body>
+  <h1>Run id: {{runId}}</h1>
+  <div class="row">
+      <div class="span10">
+        <div class="accordion" id="accordion2">
+          {{#each tests}}
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{index}}">
+                <i class="{{#if result}}icon-ok{{else}}icon-remove{{/if}}"></i>
+                {{name}}
+              </a>
+            </div>
+            {{#unless result.message}}
+              <div id="collapse{{index}}" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  {{options.message}}
+                </div>
+              </div>
+            {{/unless}}
+          </div>
+          {{/each}}
+          
+        </div>
+      </div>
+    </div>
+
+  <script src="/js/jquery-1.8.3.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>
