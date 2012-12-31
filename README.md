@@ -1,7 +1,8 @@
 roomba
 ======
 
-*Not ready for public yet*
+**Not ready for public yet**
+
 Automated javascript testing
 
 Same test using roomba
