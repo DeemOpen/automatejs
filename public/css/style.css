@@ -10,8 +10,6 @@ body {
 	color: red;
 }
 
-.icon-
-
 .accordion-heading .pass {
 	background-color: green;
 }
@@ -20,3 +18,6 @@ body {
 	background-color: red;
 }
 
+#clearAll {
+	padding-top: 0;
+}

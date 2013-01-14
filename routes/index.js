@@ -1,5 +1,11 @@
-var fs = require("fs");
+"use strict";
+
+var fs = require("fs")
+, exec = require("child_process").exec
+, async = require("async")
+
 exports.index = function(req, res){
+
   var runs = fs.readdirSync(__dirname + "/../runs");
   runs = runs.map(function(run) {
     return run.replace(".json", "");
@@ -13,7 +19,6 @@ exports.index = function(req, res){
 };
 
 exports.save = function(req, res) {
-  console.log("req.body:" + JSON.stringify(req.body));
   var test = req.body;
   var runId = test.currentRunId;
   delete test.currentRunId;
@@ -31,7 +36,7 @@ exports.save = function(req, res) {
 
 exports.getRunId = function(req, res) {
   var platform = req.query.platform;
-  var newRunId = platform  + "-" + (new Date().getTime());
+  var newRunId = (new Date().getTime()) + "-" + platform;
   console.log("newRunId:" + newRunId);
   var basicRunJSON = {
     id: newRunId,
@@ -56,5 +61,21 @@ exports.run = function(req, res) {
     }
   });
   runJson.runId = runId;
-  res.render("run", runJson); 
+  res.render("run", runJson);
 };
+
+exports.clear = function(req, res) {
+  var execOptions = {
+    cwd: __dirname + "/../runs/"
+  }
+  exec("rm *.json", execOptions, onDelete)
+  function onDelete(err, stdout, stderr) {
+    if (err) {
+      console.log("stdout:" + stdout);
+      console.log("stderr:" + stderr);
+      res.send(500, err)
+    } else {
+      res.send(200)
+    }
+  }
+}

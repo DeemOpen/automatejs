@@ -15,7 +15,7 @@
     <h1>Roomba reports</h1>
     <table class="table table-bordered">
       <tr>
-        <th>Run Ids</th>
+        <th>Run Ids <button id='clearAll' class="pull-right btn btn-link">Clear all</button></th>
       </tr>
       {{#each runs}}
         <tr>
@@ -28,5 +28,17 @@
 
   <script src="/js/jquery-1.8.3.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    $("#clearAll").click(function() {
+      if(confirm("Are you sure you want to DELETE all runs?")) {
+        $.get("/clear")
+          .success(function() {
+            location.reload()
+          });
+      }
+
+    });
+  </script>
+
 </body>
 </html>

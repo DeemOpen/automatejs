@@ -1,4 +1,4 @@
-
+"use strict";
 /**
  * Module dependencies.
  */
@@ -40,6 +40,7 @@ app.get('/', routes.index);
 app.get('/run/:id', routes.run);
 app.post('/save', routes.save);
 app.get('/getRunId', routes.getRunId);
+app.get('/clear', routes.clear);
 
 // app.get('/users', user.list);
 
