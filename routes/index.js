@@ -5,12 +5,17 @@ var fs = require("fs")
 , async = require("async")
 
 exports.index = function(req, res){
+  var RUNS_DIR = __dirname + "/../runs"
+  ,   runs
 
-  var runs = fs.readdirSync(__dirname + "/../runs");
-  runs = runs.map(function(run) {
-    return run.replace(".json", "");
-  });
-
+  if (!fs.existsSync(RUNS_DIR)) {
+    runs = []
+  } else {
+    runs = fs.readdirSync(RUNS_DIR);
+    runs = runs.map(function(run) {
+      return run.replace(".json", "");
+    });
+  }
   console.log("runs:" + runs);
   
   res.render('index', {
