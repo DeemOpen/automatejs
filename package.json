@@ -13,7 +13,7 @@
   "optionalDependencies": {},
   "engines": {
     "node": "~0.8",
-    "npm": "*"
+    "npm": "1.1.x"
   },
   "author": "Aravind Ramanathan <aravindr85@gmail.com>",
   "description": "Automated javascript testing",
