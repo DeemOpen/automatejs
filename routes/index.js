@@ -15,11 +15,15 @@ exports.index = function(req, res){
   } else {
     runs = fs.readdirSync(RUNS_DIR);
     runs = runs.map(function(run) {
-      return run.replace(".json", "");
+      var parts = run.replace(".json", "").split("-");
+      console.log("parts:" + parts);
+      return {
+        date: new Date(parseInt(parts[0], 10)),
+        name: parts[1],
+        filename: run
+      }
     });
   }
-  console.log("runs:" + runs);
-  
   res.render('index', {
     runs: runs
   });

@@ -11,14 +11,17 @@
 </head>
 <body>
   <div class="conatainer">
-    <h1>Roomba reports</h1>
+    <h2>Runs report </h2>
+    <p> Click on a run to get detailed info</p>
     <table class="table table-bordered">
       <tr>
-        <th>Run Ids <button id='clearAll' class="pull-right btn btn-link">Clear all</button></th>
+        <th> Name/platform </th>
+        <th> Start Time <button id='clearAll' class="pull-right btn btn-link">Clear all</button></th>
       </tr>
       {{#each runs}}
         <tr>
-          <td><a href="/run/{{.}}">{{.}}</a></td>
+          <td><a href="/run/{{filename}}">{{name}}</a></td>
+          <td><a href="/run/{{filename}}">{{date}}</a></td>
         </tr>
       {{/each}}
     </table>
