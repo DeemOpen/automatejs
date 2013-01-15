@@ -3,6 +3,7 @@
 var fs = require("fs")
 , exec = require("child_process").exec
 , async = require("async")
+, mkdirp = require("mkdirp")
 
 exports.index = function(req, res){
   var RUNS_DIR = __dirname + "/../runs"
@@ -10,6 +11,7 @@ exports.index = function(req, res){
 
   if (!fs.existsSync(RUNS_DIR)) {
     runs = []
+    mkdirp(RUNS_DIR)
   } else {
     runs = fs.readdirSync(RUNS_DIR);
     runs = runs.map(function(run) {
