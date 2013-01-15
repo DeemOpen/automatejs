@@ -42,8 +42,8 @@ exports.save = function(req, res) {
 };
 
 exports.getRunId = function(req, res) {
-  var platform = req.query.platform;
-  var newRunId = (new Date().getTime()) + "-" + platform;
+  var name = req.query.name;
+  var newRunId = (new Date().getTime()) + "-" + name;
   console.log("newRunId:" + newRunId);
   var basicRunJSON = {
     id: newRunId,
