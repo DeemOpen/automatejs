@@ -16,7 +16,6 @@ exports.index = function(req, res){
     runs = fs.readdirSync(RUNS_DIR);
     runs = runs.map(function(run) {
       var parts = run.replace(".json", "").split("-");
-      console.log("parts:" + parts);
       return {
         date: new Date(parseInt(parts[0], 10)),
         name: parts[1],
@@ -48,7 +47,6 @@ exports.save = function(req, res) {
 exports.getRunId = function(req, res) {
   var name = req.query.name;
   var newRunId = (new Date().getTime()) + "-" + name;
-  console.log("newRunId:" + newRunId);
   var basicRunJSON = {
     id: newRunId,
     tests: []
@@ -82,8 +80,6 @@ exports.clear = function(req, res) {
   exec("rm *.json", execOptions, onDelete)
   function onDelete(err, stdout, stderr) {
     if (err) {
-      console.log("stdout:" + stdout);
-      console.log("stderr:" + stderr);
       res.send(500, err)
     } else {
       res.send(200)

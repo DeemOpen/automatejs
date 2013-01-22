@@ -37,7 +37,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/run/:id', routes.run);
+app.get('/run/:id.json', routes.run);
 app.post('/save', routes.save);
 app.get('/getRunId', routes.getRunId);
 app.get('/clear', routes.clear);
