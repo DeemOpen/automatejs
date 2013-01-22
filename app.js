@@ -38,6 +38,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/run/:id.json', routes.run);
+app.get('/end/:id', routes.end);
+app.get('/getRunJson/:id', routes.getRunJson);
 app.post('/save', routes.save);
 app.get('/getRunId', routes.getRunId);
 app.get('/clear', routes.clear);

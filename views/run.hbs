@@ -10,7 +10,13 @@
   <link rel='stylesheet' href='/css/style.css'>
 </head>
 <body>
-  <h1>Run id: {{runId}}</h1>
+  <h1>Run id: {{runId}}
+  </h1>
+  <span class="label label-{{#if end}}success{{else}}warning{{/if}}">
+    {{#if end}}Completed{{else}}Running{{/if}}
+  </span>
+  <br>
+  <br>
   <div class="row">
       <div class="span10">
         <div class="accordion" id="accordion2">

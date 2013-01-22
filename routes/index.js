@@ -4,7 +4,7 @@ var fs = require("fs")
 , exec = require("child_process").exec
 , async = require("async")
 , mkdirp = require("mkdirp")
-
+, path = require("path")
 exports.index = function(req, res){
   var RUNS_DIR = __dirname + "/../runs"
   ,   runs
@@ -85,4 +85,40 @@ exports.clear = function(req, res) {
       res.send(200)
     }
   }
+}
+
+exports.end = function(req, res) {
+  var runId = req.params.id;
+  
+  var suite = JSON.parse(fs.readFileSync(__dirname + "/../runs/" + runId + ".json"));
+  
+  suite.end = true;
+  fs.writeFile(__dirname + "/../runs/" + runId + ".json", JSON.stringify(suite), function(err) {
+    if (err) {
+      res.send(500, err);
+      throw err;
+    }
+    res.end();
+  });
+}
+
+exports.getRunJson = function(req, res) {
+  var runId = req.params.id
+  , found = false
+  , RUNS_DIR = path.normalize(__dirname + "/../runs/")
+  , runs
+  
+  runs = fs.readdirSync(RUNS_DIR);
+  runs.forEach(function(run) {
+    if (run.indexOf(runId) > 0) {
+      console.log("RUNS_DIR:" + RUNS_DIR);
+      res.sendfile(path.join(RUNS_DIR, run))
+      found = true
+    }
+  })
+
+  if (!found) {
+    res.send(400)
+  }
+
 }
