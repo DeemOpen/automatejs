@@ -21,6 +21,7 @@ exports.index = function(req, res){
       var formattedDate = runDate.toLocaleTimeString() + " " +
         (runDate.getMonth() + 1) + "/" + runDate.getDate()
       return {
+        date: runDate,
         formattedDate: formattedDate,
         name: parts[1],
         filename: run
@@ -40,14 +41,16 @@ exports.save = function(req, res) {
   var test = req.body;
   var runId = test.currentRunId;
   delete test.currentRunId;
-  var suite = JSON.parse(fs.readFileSync(__dirname + "/../runs/" + runId + ".json"));
+  var runJson = fs.readFileSync(__dirname + "/../runs/" + runId + ".json")
+  console.log("runId:" + __dirname + "/../runs/" + runId + ".json");
+  console.log("runJson:" + runJson.length);
+  var suite = JSON.parse(runJson);
   test.result = (test.result === "true");
+  if (suite.result) { //if suite hasn't failed yet
+    suite.result = test.result
+  }
   suite.tests.push(test);
-  fs.writeFile(__dirname + "/../runs/" + runId + ".json", JSON.stringify(suite), function(err) {
-    if (err) {
-      throw err;
-    }
-  });
+  fs.writeFileSync(__dirname + "/../runs/" + runId + ".json", JSON.stringify(suite));
 
   res.end();
 };
@@ -57,6 +60,8 @@ exports.getRunId = function(req, res) {
   var newRunId = (new Date().getTime()) + "-" + name;
   var basicRunJSON = {
     id: newRunId,
+    end: false,
+    result: true,
     tests: []
   };
   fs.writeFile(__dirname + "/../runs/" + newRunId + ".json", JSON.stringify(basicRunJSON), function(err) {
