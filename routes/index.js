@@ -24,7 +24,8 @@ exports.index = function(req, res){
         date: runDate,
         formattedDate: formattedDate,
         name: parts[1],
-        filename: run
+        filename: run,
+        runInfo: JSON.parse(fs.readFileSync(path.join(RUNS_DIR, run)))
       }
     });
   }
