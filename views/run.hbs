@@ -13,8 +13,21 @@
   <h1>Run id: {{runId}}
   </h1>
   <span class="label label-{{#if end}}success{{else}}warning{{/if}}">
-    {{#if end}}Completed{{else}}Running{{/if}}
+    {{#if end}}
+      Completed
+    {{else}}
+      Running
+    {{/if}}
   </span>
+  {{#if end}}
+    <span class="label label-{{#if result}}success{{else}}important{{/if}}">
+      {{#if result}}
+        Pass
+      {{else}}
+        Failed
+      {{/if}}
+    </span>
+  {{/if}}
   <br>
   <br>
   <div class="row">
