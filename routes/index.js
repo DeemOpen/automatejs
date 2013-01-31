@@ -5,6 +5,7 @@ var fs = require("fs")
 , async = require("async")
 , mkdirp = require("mkdirp")
 , path = require("path")
+
 exports.index = function(req, res){
   var RUNS_DIR = __dirname + "/../runs"
   ,   runs
@@ -16,13 +17,20 @@ exports.index = function(req, res){
     runs = fs.readdirSync(RUNS_DIR);
     runs = runs.map(function(run) {
       var parts = run.replace(".json", "").split("-");
+      var runDate = new Date(parseInt(parts[0], 10))
+      var formattedDate = runDate.toLocaleTimeString() + " " +
+        (runDate.getMonth() + 1) + "/" + runDate.getDate()
       return {
-        date: new Date(parseInt(parts[0], 10)),
+        formattedDate: formattedDate,
         name: parts[1],
         filename: run
       }
     });
   }
+
+  runs.sort(function(run1, run2) {
+    return run1.date < run2.date
+  })
   res.render('index', {
     runs: runs
   });
