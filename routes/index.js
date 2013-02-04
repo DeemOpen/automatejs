@@ -5,10 +5,10 @@ var fs = require("fs")
 , async = require("async")
 , mkdirp = require("mkdirp")
 , path = require("path")
+, RUNS_DIR = __dirname + "/../runs/"
 
 exports.index = function(req, res){
-  var RUNS_DIR = __dirname + "/../runs"
-  ,   runs
+  var runs
 
   if (!fs.existsSync(RUNS_DIR)) {
     runs = []
@@ -39,12 +39,13 @@ exports.index = function(req, res){
 };
 
 exports.save = function(req, res) {
-  var test = req.body;
-  var runId = test.currentRunId;
-  delete test.currentRunId;
-  var runJson = fs.readFileSync(__dirname + "/../runs/" + runId + ".json")
-  console.log("runId:" + __dirname + "/../runs/" + runId + ".json");
-  console.log("runJson:" + runJson.length);
+  var runIdJsonPath
+  ,  test = req.body
+  ,  runId = test.currentRunId
+  
+  runIdJsonPath = path.join(RUNS_DIR, runId + ".json")
+  ;delete test.currentRunId;
+  var runJson = fs.readFileSync(runIdJsonPath, "utf8")
   var suite = JSON.parse(runJson);
   test.result = (test.result === "true");
   if (suite.result) { //if suite hasn't failed yet
@@ -119,7 +120,6 @@ exports.end = function(req, res) {
 exports.getRunJson = function(req, res) {
   var runId = req.params.id
   , found = false
-  , RUNS_DIR = path.normalize(__dirname + "/../runs/")
   , runs
   
   runs = fs.readdirSync(RUNS_DIR);
