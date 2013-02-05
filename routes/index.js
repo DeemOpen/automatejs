@@ -70,12 +70,20 @@ exports.getRunId = function(req, res) {
   console.log("http://www.useragentstring.com/" + queryString);
 
   request("http://www.useragentstring.com/?" + queryString, function(err, reqResp, body) {
+    var browser
+    if (!err) {
+      body = JSON.parse(body)
+      browser = body.agent_name.toLowerCase();
+      if (browser.indexOf("android")) {
+        browser = "android";
+      }
+    }
     var basicRunJSON = {
       id: newRunId,
       end: false,
       result: true,
       tests: {},
-      browser: (err? "" : JSON.parse(body).agent_name)
+      browser: (err? "" : browser)
     };
     fs.writeFileSync(path.join(RUNS_DIR, newRunId + ".json"), JSON.stringify(basicRunJSON));
     res.send(200, "" + newRunId);
