@@ -7,28 +7,24 @@ var fs = require("fs")
 , path = require("path")
 , RUNS_DIR = __dirname + "/../runs/"
 
+mkdirp(RUNS_DIR)
 exports.index = function(req, res){
   var runs
 
-  if (!fs.existsSync(RUNS_DIR)) {
-    runs = []
-    mkdirp(RUNS_DIR)
-  } else {
-    runs = fs.readdirSync(RUNS_DIR);
-    runs = runs.map(function(run) {
-      var parts = run.replace(".json", "").split("-");
-      var runDate = new Date(parseInt(parts[0], 10))
-      var formattedDate = runDate.toLocaleTimeString() + " " +
-        (runDate.getMonth() + 1) + "/" + runDate.getDate()
-      return {
-        date: runDate,
-        formattedDate: formattedDate,
-        name: parts[1],
-        filename: run,
-        runInfo: JSON.parse(fs.readFileSync(path.join(RUNS_DIR, run)))
-      }
-    });
-  }
+  runs = fs.readdirSync(RUNS_DIR);
+  runs = runs.map(function(run) {
+    var parts = run.replace(".json", "").split("-");
+    var runDate = new Date(parseInt(parts[0], 10))
+    var formattedDate = runDate.toLocaleTimeString() + " " +
+      (runDate.getMonth() + 1) + "/" + runDate.getDate()
+    return {
+      date: runDate,
+      formattedDate: formattedDate,
+      name: parts[1],
+      filename: run,
+      runInfo: JSON.parse(fs.readFileSync(path.join(RUNS_DIR, run)))
+    }
+  });
 
   runs.sort(function(run1, run2) {
     return run1.date < run2.date
