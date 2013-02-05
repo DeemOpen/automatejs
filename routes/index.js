@@ -6,6 +6,8 @@ var fs = require("fs")
 , mkdirp = require("mkdirp")
 , path = require("path")
 , RUNS_DIR = __dirname + "/../runs/"
+, request = require("request")
+, qs = require("querystring")
 
 mkdirp(RUNS_DIR)
 exports.index = function(req, res){
@@ -50,7 +52,7 @@ exports.save = function(req, res) {
   }
   suite.tests[moduleName] = suite.tests[moduleName] || [];
   suite.tests[moduleName].push(test);
-  fs.writeFileSync(__dirname + "/../runs/" + runId + ".json", JSON.stringify(suite));
+  fs.writeFileSync(path.join(RUNS_DIR, runId + ".json"), JSON.stringify(suite));
 
   res.end();
 };
@@ -58,23 +60,31 @@ exports.save = function(req, res) {
 exports.getRunId = function(req, res) {
   var name = req.query.name;
   var newRunId = (new Date().getTime()) + "-" + name;
-  var basicRunJSON = {
-    id: newRunId,
-    end: false,
-    result: true,
-    tests: {}
-  };
-  fs.writeFile(__dirname + "/../runs/" + newRunId + ".json", JSON.stringify(basicRunJSON), function(err) {
-    if (err) {
-      throw err;
-    }
+  var userAgent = req.query.ua;
+
+  var queryString = qs.stringify({
+    uas: userAgent,
+    getJSON: "all"
   });
-  res.send(200, "" + newRunId);
+
+  console.log("http://www.useragentstring.com/" + queryString);
+
+  request("http://www.useragentstring.com/?" + queryString, function(err, reqResp, body) {
+    var basicRunJSON = {
+      id: newRunId,
+      end: false,
+      result: true,
+      tests: {},
+      browser: (err? "" : JSON.parse(body).agent_name)
+    };
+    fs.writeFileSync(path.join(RUNS_DIR, newRunId + ".json"), JSON.stringify(basicRunJSON));
+    res.send(200, "" + newRunId);
+  })
 };
 
 exports.run = function(req, res) {
   var runId = req.params.id;
-  var runJson = JSON.parse(fs.readFileSync(__dirname + "/../runs/" + runId + ".json"));
+  var runJson = JSON.parse(fs.readFileSync(path.join(RUNS_DIR, runId + ".json")));
   var index = 1;
   var moduleName
   ,  moduleResult = true
@@ -86,14 +96,13 @@ exports.run = function(req, res) {
       }
     });
   }
-  console.log("runJson" + JSON.stringify(runJson));
   runJson.runId = runId;
   res.render("run", runJson);
 };
 
 exports.clear = function(req, res) {
   var execOptions = {
-    cwd: __dirname + "/../runs/"
+    cwd: RUNS_DIR
   }
   exec("rm *.json", execOptions, onDelete)
   function onDelete(err, stdout, stderr) {
@@ -108,16 +117,11 @@ exports.clear = function(req, res) {
 exports.end = function(req, res) {
   var runId = req.params.id;
   
-  var suite = JSON.parse(fs.readFileSync(__dirname + "/../runs/" + runId + ".json"));
+  var suite = JSON.parse(fs.readFileSync(path.join(RUNS_DIR, runId + ".json")));
   
   suite.end = true;
-  fs.writeFile(__dirname + "/../runs/" + runId + ".json", JSON.stringify(suite), function(err) {
-    if (err) {
-      res.send(500, err);
-      throw err;
-    }
-    res.end();
-  });
+  fs.writeFile(path.join(RUNS_DIR, runId + ".json"), JSON.stringify(suite));
+  res.end();
 }
 
 exports.getRunJson = function(req, res) {
@@ -128,7 +132,6 @@ exports.getRunJson = function(req, res) {
   runs = fs.readdirSync(RUNS_DIR);
   runs.forEach(function(run) {
     if (run.indexOf(runId) > 0) {
-      console.log("RUNS_DIR:" + RUNS_DIR);
       res.sendfile(path.join(RUNS_DIR, run))
       found = true
     }

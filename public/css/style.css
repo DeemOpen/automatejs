@@ -21,3 +21,7 @@ body {
 #clearAll {
 	padding-top: 0;
 }
+
+td a img {
+	width: 20px;
+}
