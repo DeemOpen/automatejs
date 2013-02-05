@@ -15,16 +15,15 @@
     <p> Click on a run to get detailed info</p>
     <table class="table table-bordered">
       <tr>
-        <th> Name/platform </th>
+        <th> Run Id </th>
         <th> Start Time <button id='clearAll' class="pull-right btn btn-link">Clear all</button></th>
       </tr>
       {{#each runs}}
         <tr>
           <td>
             <a href="/run/{{filename}}">
-              <img src="/img/{{runInfo.browser}}.png">
               {{name}}
-                {{#with runInfo}}
+              {{#with runInfo}}
                 {{#unless end}}
                 <span class="label label-{{#if end}}success{{else}}warning{{/if}}">
                   Running
@@ -39,7 +38,8 @@
                     {{/if}}
                   </span>
                 {{/if}}
-                {{/with}}
+              {{/with}}
+              <img src="/img/{{runInfo.browser}}.png">
             </a>
           </td>
           <td><a href="/run/{{filename}}">{{formattedDate}}</a></td>

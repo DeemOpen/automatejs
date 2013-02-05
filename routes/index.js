@@ -64,7 +64,7 @@ exports.getRunId = function(req, res) {
   if (userAgent.indexOf("android") > -1) {
     browser = "android"
   } else if (userAgent.indexOf("ipad") > -1 || userAgent.indexOf("iphone") > -1) {
-    browser = "safari"
+    browser = "apple"
   } else {
     browser = "chrome"
   }
