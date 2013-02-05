@@ -23,24 +23,24 @@
           <td>
             <a href="/run/{{filename}}">
               {{name}}
-              {{#with runInfo}}
-                {{#unless end}}
-                <span class="label label-{{#if end}}success{{else}}warning{{/if}}">
-                  Running
-                </span>
-                {{/unless}}
-                {{#if end}}
-                  <span class="label label-{{#if result}}success{{else}}important{{/if}}">
-                    {{#if result}}
-                      Pass
-                    {{else}}
-                      Failed
-                    {{/if}}
-                  </span>
-                {{/if}}
-              {{/with}}
-              <img src="/img/{{runInfo.browser}}.png">
             </a>
+            {{#with runInfo}}
+              {{#unless end}}
+              <span class="label label-{{#if end}}success{{else}}warning{{/if}}">
+                Running
+              </span>
+              {{/unless}}
+              {{#if end}}
+                <span class="label label-{{#if result}}success{{else}}important{{/if}}">
+                  {{#if result}}
+                    Pass
+                  {{else}}
+                    Failed
+                  {{/if}}
+                </span>
+              {{/if}}
+            {{/with}}
+            <img src="/img/{{runInfo.browser}}.png">
           </td>
           <td><a href="/run/{{filename}}">{{formattedDate}}</a></td>
         </tr>
