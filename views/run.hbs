@@ -32,24 +32,38 @@
   <br>
   <div class="row">
       <div class="span10">
-        <div class="accordion" id="accordion2">
-          {{#each tests}}
-          <div class="accordion-group">
-            <div class="accordion-heading">
-              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{index}}">
-                <i class="{{#if result}}icon-ok{{else}}icon-remove{{/if}}"></i>
-                {{name}}
-              </a>
-            </div>
-            {{#unless result.message}}
-              <div id="collapse{{index}}" class="accordion-body collapse">
+        <div class="accordion" id="accordion1">
+          {{#eachProperty tests}}
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse{{idEscape property}}">
+                  <i class="{{#moduleResult value}}icon-ok{{else}}icon-remove{{/moduleResult}}"></i>
+                  {{property}}
+                </a>
+              </div>
+              <div id="collapse{{idEscape property}}" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  {{options.message}}
+                  {{#each value}}
+                    <div class="accordion-group">
+                      <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{index}}">
+                          <i class="{{#if result}}icon-ok{{else}}icon-remove{{/if}}"></i>
+                          {{name}}
+                        </a>
+                      </div>
+                      {{#unless result.message}}
+                        <div id="collapse{{index}}" class="accordion-body collapse">
+                          <div class="accordion-inner">
+                            {{options.message}}
+                          </div>
+                        </div>
+                      {{/unless}}
+                    </div>
+                  {{/each}}
                 </div>
               </div>
-            {{/unless}}
-          </div>
-          {{/each}}
+            </div>
+          {{/eachProperty}}
           
         </div>
       </div>

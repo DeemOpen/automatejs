@@ -6,7 +6,8 @@
 var express = require('express')
   , routes = require('./routes')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , hbs = require("hbs")
 
 var app = express();
 
@@ -49,3 +50,32 @@ app.get('/clear', routes.clear);
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+//hbs helpers
+hbs.registerHelper('eachProperty', function(context, options) {
+    var ret = "";
+    for(var prop in context)
+    {
+        ret = ret + options.fn({property:prop,value:context[prop]});
+    }
+    return ret;
+});
+
+hbs.registerHelper('idEscape', function(text) {
+  return text.replace(/[\/\.]/g, "");
+});
+
+hbs.registerHelper('moduleResult', function(tests, options) {
+  var result = true
+  tests.forEach(function(test) {
+    if (result) {
+      result = test.result
+    }
+  })
+  if (result) {
+    return options.fn()
+  } else {
+    return options.inverse()
+  }
+});
+

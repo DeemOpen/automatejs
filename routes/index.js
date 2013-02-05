@@ -38,6 +38,7 @@ exports.save = function(req, res) {
   var runIdJsonPath
   ,  test = req.body
   ,  runId = test.currentRunId
+  ,  moduleName = test.moduleName || "default"
   
   runIdJsonPath = path.join(RUNS_DIR, runId + ".json")
   ;delete test.currentRunId;
@@ -47,7 +48,8 @@ exports.save = function(req, res) {
   if (suite.result) { //if suite hasn't failed yet
     suite.result = test.result
   }
-  suite.tests.push(test);
+  suite.tests[moduleName] = suite.tests[moduleName] || [];
+  suite.tests[moduleName].push(test);
   fs.writeFileSync(__dirname + "/../runs/" + runId + ".json", JSON.stringify(suite));
 
   res.end();
@@ -60,7 +62,7 @@ exports.getRunId = function(req, res) {
     id: newRunId,
     end: false,
     result: true,
-    tests: []
+    tests: {}
   };
   fs.writeFile(__dirname + "/../runs/" + newRunId + ".json", JSON.stringify(basicRunJSON), function(err) {
     if (err) {
@@ -74,12 +76,17 @@ exports.run = function(req, res) {
   var runId = req.params.id;
   var runJson = JSON.parse(fs.readFileSync(__dirname + "/../runs/" + runId + ".json"));
   var index = 1;
-  runJson.tests.forEach(function(test) {
-    test.index = index++;
-    if (test.options && test.options.error) {
-      test.options.message = JSON.stringify(test.options.error, null, 4);
-    }
-  });
+  var moduleName
+  ,  moduleResult = true
+  for (moduleName in runJson.tests) {
+    runJson.tests[moduleName].forEach(function(test) {
+      test.index = index++;
+      if (test.options && test.options.error) {
+        test.options.message = JSON.stringify(test.options.error, null, 4);
+      }
+    });
+  }
+  console.log("runJson" + JSON.stringify(runJson));
   runJson.runId = runId;
   res.render("run", runJson);
 };
