@@ -6,8 +6,6 @@ var fs = require("fs")
 , mkdirp = require("mkdirp")
 , path = require("path")
 , RUNS_DIR = __dirname + "/../runs/"
-, request = require("request")
-, qs = require("querystring")
 
 mkdirp(RUNS_DIR)
 exports.index = function(req, res){
@@ -58,36 +56,28 @@ exports.save = function(req, res) {
 };
 
 exports.getRunId = function(req, res) {
-  var name = req.query.name;
-  var newRunId = (new Date().getTime()) + "-" + name;
-  var userAgent = req.query.ua;
+  var name = req.query.name
+  , newRunId = (new Date().getTime()) + "-" + name
+  , userAgent = req.query.ua.toLowerCase()
+  , browser;
 
-  var queryString = qs.stringify({
-    uas: userAgent,
-    getJSON: "all"
-  });
+  if (userAgent.indexOf("android") > -1) {
+    browser = "android"
+  } else if (userAgent.indexOf("ipad") > -1 || userAgent.indexOf("iphone") > -1) {
+    browser = "safari"
+  } else {
+    browser = "chrome"
+  }
 
-  console.log("http://www.useragentstring.com/" + queryString);
-
-  request("http://www.useragentstring.com/?" + queryString, function(err, reqResp, body) {
-    var browser
-    if (!err) {
-      body = JSON.parse(body)
-      browser = body.agent_name.toLowerCase();
-      if (browser.indexOf("android")) {
-        browser = "android";
-      }
-    }
-    var basicRunJSON = {
-      id: newRunId,
-      end: false,
-      result: true,
-      tests: {},
-      browser: (err? "" : browser)
-    };
-    fs.writeFileSync(path.join(RUNS_DIR, newRunId + ".json"), JSON.stringify(basicRunJSON));
-    res.send(200, "" + newRunId);
-  })
+  var basicRunJSON = {
+    id: newRunId,
+    end: false,
+    result: true,
+    tests: {},
+    browser: browser
+  };
+  fs.writeFileSync(path.join(RUNS_DIR, newRunId + ".json"), JSON.stringify(basicRunJSON));
+  res.send(200, "" + newRunId);
 };
 
 exports.run = function(req, res) {
