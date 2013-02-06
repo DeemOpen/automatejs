@@ -12,7 +12,12 @@ exports.index = function(req, res){
   var runs
 
   runs = fs.readdirSync(RUNS_DIR);
-  runs = runs.map(function(run) {
+  runs =
+    runs
+    .filter(function removeDSSTore(fileName){
+      return fileName.indexOf("DS_Store") === -1
+    })
+    .map(function(run) {
     var parts = run.replace(".json", "").split("-");
     var runDate = new Date(parseInt(parts[0], 10))
     var formattedDate = runDate.toLocaleTimeString() + " " +
@@ -22,7 +27,7 @@ exports.index = function(req, res){
       formattedDate: formattedDate,
       name: parts[1],
       filename: run,
-      runInfo: JSON.parse(fs.readFileSync(path.join(RUNS_DIR, run)))
+      runInfo: JSON.parse(fs.readFileSync(path.join(RUNS_DIR, run), "utf8"))
     }
   });
 
@@ -82,7 +87,7 @@ exports.getRunId = function(req, res) {
 
 exports.run = function(req, res) {
   var runId = req.params.id;
-  var runJson = JSON.parse(fs.readFileSync(path.join(RUNS_DIR, runId + ".json")));
+  var runJson = JSON.parse(fs.readFileSync(path.join(RUNS_DIR, runId + ".json"), "utf8"));
   var index = 1;
   var moduleName
   ,  moduleResult = true
@@ -113,12 +118,12 @@ exports.clear = function(req, res) {
 }
 
 exports.end = function(req, res) {
+  console.log("ENDING!!!");
   var runId = req.params.id;
-  
-  var suite = JSON.parse(fs.readFileSync(path.join(RUNS_DIR, runId + ".json")));
+  var suite = JSON.parse(fs.readFileSync(path.join(RUNS_DIR, runId + ".json"), "utf8"));
   
   suite.end = true;
-  fs.writeFile(path.join(RUNS_DIR, runId + ".json"), JSON.stringify(suite));
+  fs.writeFileSync(path.join(RUNS_DIR, runId + ".json"), JSON.stringify(suite));
   res.end();
 }
 
