@@ -51,13 +51,16 @@
                           {{name}}
                         </a>
                       </div>
-                      {{#unless result.message}}
-                        <div id="collapse{{index}}" class="accordion-body collapse">
-                          <div class="accordion-inner">
+                      <div id="collapse{{index}}" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                          {{#if options.message}}
                             {{options.message}}
-                          </div>
+                          {{/if}}
+                          {{#if options.error}}
+                            {{options.error.message}}
+                          {{/if}}
                         </div>
-                      {{/unless}}
+                      </div>
                     </div>
                   {{/each}}
                 </div>

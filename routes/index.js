@@ -94,12 +94,10 @@ exports.run = function(req, res) {
   for (moduleName in runJson.tests) {
     runJson.tests[moduleName].forEach(function(test) {
       test.index = index++;
-      if (test.options && test.options.error) {
-        test.options.message = JSON.stringify(test.options.error, null, 4);
-      }
     });
   }
   runJson.runId = runId;
+  console.log("runJson" + JSON.stringify(runJson));
   res.render("run", runJson);
 };
 
