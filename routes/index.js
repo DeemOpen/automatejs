@@ -32,7 +32,7 @@ exports.index = function(req, res){
   });
 
   runs.sort(function(run1, run2) {
-    return run1.date < run2.date
+    return run2.date - run1.date
   })
   res.render('index', {
     runs: runs
