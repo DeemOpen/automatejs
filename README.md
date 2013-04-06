@@ -1,18 +1,24 @@
 roomba
 ======
 
-**Not ready for public yet**
+**Not really ready for prime time. Works well for us**
 
 Automated javascript testing. Esp for phonegap applications where you need to bundle integration tests with the app and test on an actual device.
 
 Dependencies
-* assumes commonjs module system
+* Only npm support at this point. So you'll need something like browserify to bundle it into the browser.
 * requires jQuery
 
 Has two components. 
 
 * Server: a reporting server where test run information is logged
 * lib/roomba.js is the runner code that needs to be bundled with the js app
+
+Install
+=======
+```shell
+npm install roombajs
+```
 
 Server
 =====
