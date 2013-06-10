@@ -19,9 +19,9 @@
   },
   "author": "Aravind Ramanathan <aravindr85@gmail.com>",
   "description": "Javascript integration/functional testing",
-  "homepage": "https://github.com/indianburger/roomba",
+  "homepage": "https://github.com/indianburger/roombajs",
   "repository": {
-    "url": "https://github.com/indianburger/roomba"
+    "url": "https://github.com/indianburger/roombajs"
   },
   "main": "lib/roomba.js"
 }
