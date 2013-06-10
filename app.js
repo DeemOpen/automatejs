@@ -25,7 +25,7 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'hbs');
   app.use(express.favicon());
-  app.use(express.logger('dev'));
+  //app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(allowCrossDomain);

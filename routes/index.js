@@ -44,7 +44,6 @@ exports.save = function(req, res) {
   ,  test = req.body
   ,  runId = test.currentRunId
   ,  moduleName = test.moduleName || "default"
-  
   runIdJsonPath = path.join(RUNS_DIR, runId + ".json")
   ;delete test.currentRunId;
   var runJson = fs.readFileSync(runIdJsonPath, "utf8")
@@ -97,7 +96,6 @@ exports.run = function(req, res) {
     });
   }
   runJson.runId = runId;
-  console.log("runJson" + JSON.stringify(runJson));
   res.render("run", runJson);
 };
 
@@ -116,10 +114,8 @@ exports.clear = function(req, res) {
 }
 
 exports.end = function(req, res) {
-  console.log("ENDING!!!");
   var runId = req.params.id;
   var suite = JSON.parse(fs.readFileSync(path.join(RUNS_DIR, runId + ".json"), "utf8"));
-  
   suite.end = true;
   fs.writeFileSync(path.join(RUNS_DIR, runId + ".json"), JSON.stringify(suite));
   res.end();
@@ -129,7 +125,6 @@ exports.getRunJson = function(req, res) {
   var runId = req.params.id
   , found = false
   , runs
-  
   runs = fs.readdirSync(RUNS_DIR);
   runs.forEach(function(run) {
     if (run.indexOf(runId) > 0) {
@@ -141,5 +136,4 @@ exports.getRunJson = function(req, res) {
   if (!found) {
     res.send(400)
   }
-
 }
