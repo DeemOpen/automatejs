@@ -1,5 +1,5 @@
 {
-  "name": "roombajs",
+  "name": "automatejs",
   "version": "0.0.11",
   "scripts": {
     "start": "node app"
@@ -19,9 +19,9 @@
   },
   "author": "Aravind Ramanathan <aravindr85@gmail.com>",
   "description": "Javascript integration/functional testing",
-  "homepage": "https://github.com/indianburger/roombajs",
+  "homepage": "https://github.com/paulyi/automatejs",
   "repository": {
-    "url": "https://github.com/indianburger/roombajs"
+    "url": "https://github.com/paulyi/automatejs"
   },
-  "main": "lib/roomba.js"
+  "main": "lib/automate.js"
 }
