@@ -126,6 +126,6 @@ automate.module("login module")
 
 License & Contribution
 ======================
-Extension Cord is released under the Apache 2.0 license.
+Automatejs is released under the Apache 2.0 license.
 Comments, bugs, pull requests, and other contributions are all welcomed!
 For questions please feel free to contact pnewman@deem.com or paul.yi@deem.com
