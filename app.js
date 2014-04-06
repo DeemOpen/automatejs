@@ -80,7 +80,7 @@ hbs.registerHelper('eachProperty', function(context, options) {
 });
 
 hbs.registerHelper('idEscape', function(text) {
-  return text.replace(/[\/\.:]/g, "");
+  return text.replace(/[\/\.: ]/g, "");
 });
 
 hbs.registerHelper('moduleResult', function(tests, options) {
